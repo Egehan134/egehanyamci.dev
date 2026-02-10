@@ -1,0 +1,133 @@
+---
+/*
+  Sidebar.astro
+*/
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { name: 'Blog', href: '/articles' },
+  { name: 'Notes', href: '/notes' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'About Me', href: '/about' },
+];
+---
+
+<aside class="sidebar">
+  <div class="sidebar-content">
+    
+    <!-- Header: Name & Theme Toggle -->
+    <div class="sidebar-header">
+      <div class="brand-container">
+        <a href="/" class="brand-name">Egehan Yamçı</a>
+      </div>
+      <ThemeToggle />
+    </div>
+
+    <!-- SEPARATOR LINE -->
+    <!-- Special styling to not touch edges -->
+    <div class="separator"></div>
+
+    <!-- Main Navigation -->
+    <nav class="nav-links">
+      {navLinks.map((link) => (
+        <a href={link.href} class="nav-item">
+          <span class="nav-text">{link.name}</span>
+        </a>
+      ))}
+    </nav>
+
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color); /* Vertical line */
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header Section */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem 1rem 1.5rem; /* Bottom Space */
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* SEPARATOR LINE STYLE */
+  .separator {
+    height: 1px;
+    background-color: var(--border-color);
+    /* Spacing from edges (for separated appearance).
+       Leaves 24px (1.5rem) space from left and right.
+    */
+    margin: 0.5rem 1.5rem 1.5rem 1.5rem; 
+    opacity: 0.6; /* Sharpness */
+  }
+
+  /* Navigation Styles */
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.75rem; /* External spacing for links */
+    gap: 0.1rem;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .nav-item:hover {
+    color: var(--text-primary);
+    background-color: var(--hover-bg);
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      border-right: none;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-content {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+    }
+
+    .sidebar-header {
+      padding: 1rem 1.5rem;
+      flex-grow: 1;
+    }
+
+    .separator, .nav-links {
+      display: none;
+    }
+  }
+</style>

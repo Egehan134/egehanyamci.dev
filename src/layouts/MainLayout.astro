@@ -1,0 +1,56 @@
+---
+/*
+  MainLayout.astro
+  The wrapper for all pages. Handles the basic HTML structure
+  and script for preventing theme flash (FOUC).
+*/
+import '../styles/global.css';
+import Sidebar from '../components/Sidebar.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <!-- Blocking script to set theme before render to prevent flash -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <Sidebar />
+      <main class="main-content">
+        <slot /> <!-- Page content will be injected here -->
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .main-content {
+    flex-grow: 1;
+    padding: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .main-content {
+      padding: 1.5rem;
+    }
+  }
+</style>

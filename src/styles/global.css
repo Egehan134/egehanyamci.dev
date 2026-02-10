@@ -1,0 +1,76 @@
+/* 
+src/styles/global.css
+*/
+
+:root {
+  /* Default (Light) Theme */
+  --bg-color: #ffffff;
+  --text-primary: #2e2e2e;
+  --text-secondary: #595959;
+  --accent-color: #635bff; 
+  --sidebar-bg: #ffffff;
+  --border-color: #e0e0e0;
+  --hover-bg: #f3f4f6; /* Soft gray for light mode */
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg-color: #171717;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --accent-color: #a7a2ff;
+  --sidebar-bg: #171717;
+  --border-color: #333333;
+  --hover-bg: #262626; /* Light tone for dark mode */
+}
+
+[data-theme="tokyo"] {
+  --bg-color: #1a1b26;
+  --text-primary: #c0caf5;
+  --text-secondary: #9aa5ce;
+  --accent-color: #7aa2f7;
+  --sidebar-bg: #1a1b26;
+  --border-color: #292e42;
+  --hover-bg: #292e42; /* Slightly lighter/different from Tokyo background */
+}
+
+/* GLOBAL RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+/* --- LAYOUT SETTINGS --- */
+.container {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1350px;
+  margin: 0 auto; 
+  border-right: none; 
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    max-width: 100%;
+  }
+}
