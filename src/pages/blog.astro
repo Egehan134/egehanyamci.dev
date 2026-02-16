@@ -1,0 +1,170 @@
+---
+/*
+  src/pages/blog.astro
+*/
+import MainLayout from '../layouts/MainLayout.astro';
+
+// 1. Fetch all Markdown files
+const allPosts = await Astro.glob('./posts/*.md');
+
+// 2. Sort by date (newest first)
+const sortedPosts = allPosts.sort((a, b) => 
+  new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
+);
+
+// 3. Group posts by year
+const postsByYear = sortedPosts.reduce((acc: Record<string, any[]>, post) => {
+  const year = new Date(post.frontmatter.date).getFullYear().toString();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {});
+
+// Sort years descending
+const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+
+// Date format helper (month + day, e.g. March 31)
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<MainLayout title="Blog | Egehan Yamçı">
+  
+  <header class="page-header">
+    <h1>Blog</h1>
+    <p class="subtitle">
+      Thoughts on software development, programming, and tech.
+    </p>
+  </header>
+
+  <div class="blog-container">
+    {years.length > 0 ? (
+      years.map(year => (
+        <section class="year-group">
+          <!-- Year heading -->
+          <div class="year-header">
+            <h2>{year}</h2>
+          </div>
+          
+          <div class="posts-list">
+            {postsByYear[year].map((post: any) => (
+              <a href={post.url} class="post-row">
+                <time class="post-date">{formatDate(post.frontmatter.date)}</time>
+                <span class="post-title">{post.frontmatter.title}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))
+    ) : (
+      <p class="no-posts">No articles found yet.</p>
+    )}
+  </div>
+
+</MainLayout>
+
+<style>
+  /* Header */
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+
+  /* Year groups */
+  .year-group {
+    margin-bottom: 3rem;
+  }
+
+  .year-header {
+    margin-bottom: 0.7rem;
+    padding-bottom: 0rem;
+  }
+
+  .year-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  /* List structure */
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 120px 1fr; 
+    align-items: center;
+    text-decoration: none;
+    
+    padding: 0.2rem 0rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    border-radius: 2px;
+    margin-bottom: 0px;
+  }
+
+  /* Remove bottom border for last item */
+  .posts-list .post-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Hover effect */
+  .post-row:hover {
+    background-color: var(--hover-bg);
+    border-bottom-color: transparent;
+  }
+
+  .post-date {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .post-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    transition: color 0.2s ease;
+  }
+
+  .no-posts {
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 600px) {
+    .post-row {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+      padding: 1rem 0.5rem;
+    }
+
+    .post-date {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+  }
+</style>

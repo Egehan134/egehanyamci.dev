@@ -1,44 +1,74 @@
 ---
 /*
-  index.astro
+  src/pages/index.astro
 */
 import MainLayout from '../layouts/MainLayout.astro';
+import { projects } from '../data/projects';
 
-const posts = [
-  { 
-    id: 1,
-    title: "How to Create an E-Commerce Analytics System?", 
-    date: "March 31"
-  },
- 
-];
+// 1. Fetch all Markdown files
+const allPosts = await Astro.glob('./posts/*.md');
+
+// 2. Sort by date (newest first)
+const sortedPosts = allPosts.sort((a, b) => 
+  new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
+);
+
+// 3. Take only the latest 5
+const posts = sortedPosts.slice(0, 5);
+
+// Date formatting helper (e.g. March 31)
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+  });
+}
 ---
 
 <MainLayout title="Home | Egehan Yamçı">
   
-  <!-- Hero Section -->
   <header class="hero">
     <div class="hero-content">
       <h1>Hey, I'm Egehan!</h1>
       <p class="intro">
         I’m a MIS student with a focus on software development, data analysis, and machine learning. 
-        Recently, I started <a href="#" class="highlight">writing this blog</a> where I share what I learn and build along the way.
+        Recently, I started <a href="/blog" class="highlight">writing this blog</a> where I share what I learn and build along the way.
       </p>
-      <p class="sub-intro"></p>
     </div>
   </header>
 
-  <!-- Blog Section -->
-  <section class="blog-section">
+  <section class="section blog-section">
     <h2>Blog</h2>
     <p class="section-subtitle">My writings.</p>
 
     <div class="post-list">
       {posts.map(post => (
-        <a href={`/posts/${post.id}`} class="post-item">
-          <time class="post-date">{post.date}</time>
-          <span class="post-title">{post.title}</span>
+        <a href={post.url} class="post-item">
+          <time class="post-date">{formatDate(post.frontmatter.date)}</time>
+          <span class="post-title">{post.frontmatter.title}</span>
         </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section projects-section">
+    <h2>Projects</h2>
+    <p class="section-subtitle">Featured projects. For all my projects, see <a href="/projects" class="highlight">projects</a>.</p>
+    
+    <div class="projects-grid">
+      {projects.map(project => (
+        <div class="project-card">
+          <div class="card-header">
+            <span class="project-year">{project.year}</span>
+            <h3 class="project-title">{project.title}</h3>
+          </div>
+          <p class="project-desc">{project.description}</p>
+          <div class="project-buttons">
+            {project.links.map(link => (
+              <a href={link.href} class="project-btn" target="_blank">{link.text}</a>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   </section>
@@ -67,18 +97,18 @@ const posts = [
     margin-bottom: 1rem;
   }
 
-  .sub-intro {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-  }
-
   .highlight {
     color: var(--accent-color);
     text-decoration: none;
+    font-weight: 500;
   }
 
-  /* BLOG SECTION STYLES */
-  .blog-section h2 {
+  /* SECTION GENERAL STYLES */
+  .section {
+    margin-bottom: 4rem;
+  }
+
+  h2 {
     font-size: 2rem;
     font-weight: 800;
     color: var(--text-primary);
@@ -91,84 +121,130 @@ const posts = [
     margin-bottom: 2rem;
   }
 
+  /* BLOG LIST STYLES */
   .post-list {
     display: flex;
     flex-direction: column;
-    gap: 0; /* Gap'i sıfırladık, çizgiler birbirine değsin */
+    gap: 0;
   }
 
   .post-item {
     display: grid;
-    grid-template-columns: 100px 1fr; 
-    gap: 1rem; 
+    grid-template-columns: 120px 1fr; 
+    gap: 0rem; 
     align-items: baseline;
-    
-    /* Row compactness */
-    padding: 0.2rem 1rem; 
-    
-    margin: 0 -1rem; 
-    
-    /* Line adjustment */
-    border-bottom: 1px solid var(--border-color);
-    
-    border-radius: 1px;
+    padding: 0.1rem 0;
     text-decoration: none; 
     color: inherit;
-    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
-  /* Remove the line under the last element */
-  .post-item:last-child {
-    border-bottom: none;
-  }
-
-  /* Hover effects */
   .post-item:hover {
-    background-color: var(--hover-bg);
-    text-decoration: none; 
-    cursor: pointer;
-    /* Hover olunca border rengiyle oynamıyoruz, sabit kalıyor */
+    transform: translateX(5px);
+    opacity: 1;
+    background-color: var(--btn-hover);
   }
 
   .post-date {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     font-family: var(--font-body);
     white-space: nowrap; 
   }
 
   .post-title {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--accent-color);
     text-decoration: none; 
   }
+
+  /* PROJECTS GRID STYLES */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1rem; 
+  }
+
+  .project-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 1.2rem; 
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+    min-height: 140px; 
+  }
   
-  .post-item:hover .post-title {
+  .project-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(167, 122, 255, 0.15); 
+  }
+
+  .card-header {
+    margin-bottom: 0.3rem;
+  }
+
+  .project-year {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.1rem;
+  }
+
+  .project-card h3.project-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .project-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem; 
+    flex-grow: 1;
+    line-height: 1.4;
+  }
+
+  .project-buttons {
+    display: flex;
+    gap: 0.5rem; 
+    flex-wrap: wrap; 
+  }
+
+  .project-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    background-color: var(--btn-bg);
+    color: var(--text-primary);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
     text-decoration: none;
   }
 
+  .project-btn:hover {
+    background-color: var(--btn-hover);
+    color: var(--text-primary);
+  }
+
   @media (max-width: 768px) {
-    .hero h1 {
-      font-size: 2.5rem;
-    }
-
+    .hero h1 { font-size: 2.5rem; }
+    
     .post-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      padding: 0.8rem 0; 
-      margin: 0;
-      border-bottom: 1px solid var(--border-color); /* Show line on mobile too */
-      border-radius: 0;
+      grid-template-columns: 100px 1fr; /* Narrow date column on mobile */
+      font-size: 0.95rem;
+      padding: 0.8rem 0;
     }
 
-    .post-item:hover {
-      background-color: transparent;
-    }
-
-    .post-date {
-      font-size: 0.9rem;
+    .projects-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

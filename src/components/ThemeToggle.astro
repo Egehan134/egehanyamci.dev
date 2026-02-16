@@ -1,6 +1,7 @@
 ---
-/* 
-ThemeToggle.astro
+/* src/components/ThemeToggle.astro
+  Handles switching between Light, Dark, and Tokyo Night themes.
+  Includes inline SVGs for the icons.
 */
 ---
 
@@ -8,7 +9,8 @@ ThemeToggle.astro
   <!-- Sun Icon (Light Mode) -->
   <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-icon lucide-sun">
-  <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/>
+  <circle cx="12" cy="12" r="4"/>
+  <path d="M12 2v2"/>
   <path d="M12 20v2"/>
   <path d="m4.93 4.93 1.41 1.41"/>
   <path d="m17.66 17.66 1.41 1.41"/>
@@ -24,11 +26,11 @@ ThemeToggle.astro
   <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/>
 </svg>
 
-  <!-- Tokyo Night Representation -->
+  <!-- Cloud Icon (Tokyo Night) -->
   <svg class="icon tokyo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloudy-icon lucide-cloudy">
-  <path d="M17.5 12a1 1 0 1 1 0 9H9.006a7 7 0 1 1 6.702-9z"/>
-  <path d="M21.832 9A3 3 0 0 0 19 7h-2.207a5.5 5.5 0 0 0-10.72.61"/></svg>
+  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-icon lucide-cloud">
+  <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+</svg>
 </button>
 
 <style>
@@ -66,7 +68,9 @@ ThemeToggle.astro
   if (btn) {
     btn.addEventListener('click', () => {
       const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme') || 'light';
+      
+      // Default dark
+      const currentTheme = html.getAttribute('data-theme') || 'dark';
       
       // Calculate next theme index
       const currentIndex = themes.indexOf(currentTheme);

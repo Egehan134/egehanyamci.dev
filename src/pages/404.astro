@@ -1,0 +1,101 @@
+---
+/*
+  src/pages/404.astro
+*/
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Page Not Found | Egehan Yamçı">
+  <div class="error-container">
+    <h1 class="error-code">404</h1>
+    <h2 class="error-title">Page Not Found</h2>
+    
+    <p class="error-message">
+      I probably haven't created this page yet.<br />
+      If you think I missed it, please contact me.
+    </p>
+
+    <a href="/" class="home-btn">Return to Home</a>
+  </div>
+</MainLayout>
+
+<style>
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 60vh; 
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0;
+    color: var(--accent-color);
+    opacity: 0.8;
+  }
+
+  .error-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+  }
+
+  .error-message {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  .contact-link {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-color);
+    transition: color 0.2s ease;
+  }
+
+  .contact-link:hover {
+    color: var(--accent-color);
+  }
+
+  .home-btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--btn-bg);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid var(--card-border);
+    transition: all 0.2s ease;
+  }
+
+  .home-btn:hover {
+    background-color: var(--btn-hover);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 5rem;
+    }
+    .error-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>

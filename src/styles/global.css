@@ -1,27 +1,39 @@
-/* 
-src/styles/global.css
-*/
+/* src/styles/global.css */
 
 :root {
-  /* Default (Light) Theme */
-  --bg-color: #ffffff;
-  --text-primary: #2e2e2e;
-  --text-secondary: #595959;
-  --accent-color: #635bff; 
-  --sidebar-bg: #ffffff;
-  --border-color: #e0e0e0;
-  --hover-bg: #f3f4f6; /* Soft gray for light mode */
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-[data-theme="dark"] {
+  /* Default Theme is now DARK */
   --bg-color: #171717;
   --text-primary: #e0e0e0;
   --text-secondary: #a0a0a0;
   --accent-color: #a7a2ff;
   --sidebar-bg: #171717;
   --border-color: #333333;
-  --hover-bg: #262626; /* Light tone for dark mode */
+  --hover-bg: #262626;
+
+  /* Dark Theme Card Colors */
+  --card-bg: #202020;
+  --card-border: #333333;
+  --btn-bg: #2a2a2a;
+  --btn-hover: #363636;
+  
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+[data-theme="light"] {
+  /* Light Theme Colors */
+  --bg-color: #ffffff;
+  --text-primary: #2e2e2e;
+  --text-secondary: #595959;
+  --accent-color: #635bff; 
+  --sidebar-bg: #ffffff;
+  --border-color: #e0e0e0;
+  --hover-bg: #f3f4f6;
+  
+  /* Light Theme Card Colors */
+  --card-bg: #ffffff;      
+  --card-border: #e0e0e0;  
+  --btn-bg: #f2f2f2;       
+  --btn-hover: #e6e6e6;    
 }
 
 [data-theme="tokyo"] {
@@ -31,7 +43,13 @@ src/styles/global.css
   --accent-color: #7aa2f7;
   --sidebar-bg: #1a1b26;
   --border-color: #292e42;
-  --hover-bg: #292e42; /* Slightly lighter/different from Tokyo background */
+  --hover-bg: #292e42;
+
+  /* Tokyo Theme Card Colors */
+  --card-bg: #202336;
+  --card-border: #292e42;
+  --btn-bg: #292e42;
+  --btn-hover: #3b4261;
 }
 
 /* GLOBAL RESET */
@@ -59,7 +77,7 @@ a:hover {
   color: var(--accent-color);
 }
 
-/* --- LAYOUT SETTINGS --- */
+/* LAYOUT */
 .container {
   display: flex;
   min-height: 100vh;

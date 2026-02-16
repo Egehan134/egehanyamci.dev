@@ -1,0 +1,264 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="About Me | Egehan Yamçı">
+  
+  <div class="about-container">
+    
+    <!-- TOP SECTION: Intro & photo -->
+    <section class="profile-section">
+      
+      <!-- Text area (left) -->
+      <div class="profile-bio">
+        <h1>Hi, I'm Egehan.</h1>
+        <p class="intro-text">
+          I'm a <strong>Management Information Systems (MIS)</strong> student based in Turkey. 
+          I have a passion for building software that solves real-world problems and analyzing data to uncover hidden patterns.
+        </p>
+        <p>
+          Currently, I'm focused on improving my skills in <strong>Data Science</strong> and <strong>Full Stack Development</strong>. 
+          When I'm not coding, you can find me exploring new technologies, reading about AI trends, or contributing to open-source projects.
+        </p>
+      </div>
+
+      <!-- PHOTO AREA -->
+      <!-- 
+      <div class="profile-image-container">
+        <img src="/images/asd.jpg" alt="asd" class="profile-image" />
+      </div> 
+      -->
+
+    </section>
+
+    <!-- DIVIDER -->
+    <hr class="divider" />
+
+    <!-- MIDDLE SECTION: Skills & Tools -->
+    <section class="skills-section">
+      <h2>Tech Stack & Tools</h2>
+      <p class="section-desc">Technologies I enjoy working with:</p>
+      
+      <div class="skills-grid">
+        
+        <div class="skill-category">
+          <h3>Languages</h3>
+          <ul class="skill-list">
+            <li>Python</li>
+            <li>JavaScript (ES6+)</li>
+            <li>SQL</li>
+            <li>HTML & CSS</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <h3>Frameworks & Libraries</h3>
+          <ul class="skill-list">
+            <li>FastAPI</li>
+            <li>Astro</li>
+            <li>React.js</li>
+            <li>Pandas & Scikit-learn</li>
+            <li>Tailwind CSS</li>
+          </ul>
+        </div>
+
+        <div class="skill-category">
+          <h3>Tools & Environment</h3>
+          <ul class="skill-list">
+            <li>Git & GitHub</li>
+            <li>Docker</li>
+            <li>VS Code</li>
+            <li>PostgreSQL</li>
+            <li>Jupyter Notebooks</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <hr class="divider" />
+
+    <!-- BOTTOM SECTION: Social / Contact -->
+    <section class="connect-section">
+      <h2>Let's Connect</h2>
+      <p>
+        I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+      </p>
+      <div class="social-links">
+        <a href="https://github.com/Egehan134" target="_blank" class="social-btn">GitHub</a>
+        <a href="https://www.linkedin.com/in/egehan-yam%C3%A7%C4%B1/" target="_blank" class="social-btn">LinkedIn</a>
+        <!--<a href="mailto:example@email.com" class="social-btn">Email</a> -->
+      </div>
+    </section>
+
+  </div>
+</MainLayout>
+
+<style>
+  .about-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* --- PROFILE SECTION --- */
+  .profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between text and image */
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .profile-bio {
+    flex: 1;
+  }
+
+  .profile-bio h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .profile-bio p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .intro-text strong {
+    color: var(--accent-color);
+    font-weight: 500;
+  }
+
+  .profile-image-container {
+    flex-shrink: 0;
+  }
+
+  .profile-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    transition: transform 0.3s ease;
+  }
+
+  .profile-image:hover {
+    transform: rotate(3deg);
+    border-color: var(--accent-color);
+  }
+
+  /* --- DIVIDER --- */
+  .divider {
+    border: 0;
+    height: 1px;
+    background: var(--border-color);
+    margin: 3rem 0;
+    opacity: 0.5;
+  }
+
+  /* --- SKILLS SECTION --- */
+  .skills-section h2, .connect-section h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .skill-category h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--accent-color);
+    padding-left: 0.8rem;
+  }
+
+  .skill-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .skill-list li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .skill-list li::before {
+    content: "▹";
+    color: var(--accent-color);
+    margin-right: 8px;
+    font-size: 0.8rem;
+  }
+
+  /* --- CONNECT SECTION --- */
+  .connect-section p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .social-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .social-btn:hover {
+    border-color: var(--accent-color);
+    background-color: var(--hover-bg);
+    transform: translateY(-2px);
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    .profile-section {
+      flex-direction: column; /* Stack vertically on mobile */
+      text-align: center;
+      gap: 2rem;
+    }
+    
+    .profile-bio h1 {
+      font-size: 2.5rem;
+    }
+
+    /* Center image on mobile if present */
+    .profile-image {
+      width: 160px;
+      height: 160px;
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

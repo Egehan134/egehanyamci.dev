@@ -1,12 +1,11 @@
 ---
 /*
-  Sidebar.astro
+  src/components/Sidebar.astro
 */
 import ThemeToggle from './ThemeToggle.astro';
 
 const navLinks = [
-  { name: 'Blog', href: '/articles' },
-  { name: 'Notes', href: '/notes' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Projects', href: '/projects' },
   { name: 'About Me', href: '/about' },
 ];
@@ -24,7 +23,6 @@ const navLinks = [
     </div>
 
     <!-- SEPARATOR LINE -->
-    <!-- Special styling to not touch edges -->
     <div class="separator"></div>
 
     <!-- Main Navigation -->
@@ -44,7 +42,7 @@ const navLinks = [
     width: 250px;
     height: 100vh;
     background-color: var(--sidebar-bg);
-    border-right: 1px solid var(--border-color); /* Vertical line */
+    border-right: 1px solid var(--border-color); /* Vertical divider */
     position: sticky;
     top: 0;
     flex-shrink: 0;
@@ -62,7 +60,7 @@ const navLinks = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 1.5rem 1rem 1.5rem; /* Bottom Space */
+    padding: 1.5rem 1.5rem 1rem 1.5rem; /* Bottom padding */
   }
 
   .brand-name {
@@ -71,22 +69,20 @@ const navLinks = [
     color: var(--text-primary);
   }
 
-  /* SEPARATOR LINE STYLE */
+  /* Separator line style */
   .separator {
     height: 1px;
     background-color: var(--border-color);
-    /* Spacing from edges (for separated appearance).
-       Leaves 24px (1.5rem) space from left and right.
-    */
+    /* Horizontal padding (for separated look). */
     margin: 0.5rem 1.5rem 1.5rem 1.5rem; 
-    opacity: 0.6; /* Sharpness */
+    opacity: 0.6; /* Opacity */
   }
 
   /* Navigation Styles */
   .nav-links {
     display: flex;
     flex-direction: column;
-    padding: 0 0.75rem; /* External spacing for links */
+    padding: 0 0.75rem; /* Padding around links */
     gap: 0.1rem;
   }
 

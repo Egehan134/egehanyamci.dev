@@ -1,0 +1,392 @@
+---
+/*
+  src/layouts/BlogPostLayout.astro
+*/
+import MainLayout from './MainLayout.astro';
+
+interface TocItem {
+  id: string;
+  text: string;
+  children?: TocItem[];
+}
+
+interface Frontmatter {
+  title: string;
+  date: string;
+  tags?: string[];
+  toc?: TocItem[];
+  icon?: string;
+}
+
+const { frontmatter } = Astro.props;
+
+const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<MainLayout title={`${frontmatter.title} | Egehan Yamçı`} maxWidth="1200px">
+  
+  <div class="post-layout-grid">
+    
+    <!-- Part 1 — Header (top row of the grid) -->
+    <header class="post-header">
+      <div class="post-meta">
+        <time>{formattedDate}</time>
+        <span class="meta-dot">|</span>
+        <span class="meta-item">Comments</span>
+      </div>
+      
+      <div class="title-container">
+        {frontmatter.icon && (
+          <img src={frontmatter.icon} alt={frontmatter.title} class="post-icon" />
+        )}
+        <h1 class="post-title">{frontmatter.title}</h1>
+      </div>
+
+      <div class="post-tags">
+        {frontmatter.tags?.map((tag: string) => <span class="tag">{tag}</span>)}
+      </div>
+    </header>
+  
+    <!-- Part 2 — Content (below grid, left column) -->
+    <div class="markdown-body">
+      <slot />
+      <div class="bottom-spacer"></div>
+    </div>
+
+    <!-- Part 3 — TOC (below grid, right column — aligned with content) -->
+    {frontmatter.toc && (
+      <aside class="toc-sidebar">
+        <div class="toc-sticky-container">
+          <h3 class="toc-title">Table of Contents</h3>
+          <ul class="toc-list">
+            {frontmatter.toc.map((item: TocItem) => (
+              <li class="toc-item">
+                <a href={`#${item.id}`} class="toc-link" set:html={item.text} />
+                {item.children && (
+                  <ul class="toc-sublist">
+                    {item.children.map((child) => (
+                      <li class="toc-item">
+                        <a href={`#${child.id}`} class="toc-link sub-link" set:html={child.text} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    )}
+
+  </div>
+
+</MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Smooth scrolling
+    document.querySelectorAll('.toc-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.getAttribute('href')?.substring(1);
+        const target = document.getElementById(id || '');
+        if (target) {
+          const offset = 20; 
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = target.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+          history.pushState(null, '', `#${id}`);
+        }
+      });
+    });
+
+    // 2. TOC Active State
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -90% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+          const activeLink = document.querySelector(`.toc-link[href="#${id}"]`);
+          if (activeLink) {
+            activeLink.classList.add('active');
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.markdown-body h2, .markdown-body h3').forEach(h => observer.observe(h));
+  });
+</script>
+
+<style>
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  /* --- LAYOUT GRID --- */
+  .post-layout-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem; /* Vertical gap on mobile */
+    position: relative;
+    width: 100%;
+  }
+
+  /* --- HEADER STYLES --- */
+  .post-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem; /* Bottom spacing on mobile */
+  }
+
+  /* --- DESKTOP GRID YAPISI --- */
+  @media (min-width: 1100px) {
+    .post-layout-grid {
+      grid-template-columns: minmax(0, 1fr) 240px;
+      gap: 2rem; 
+    }
+
+    /* Row 1: Header */
+    .post-header {
+      grid-column: 1 / 2;
+      grid-row: 1;
+      margin-bottom: 0;
+    }
+
+    /* Row 2: Content (left column) */
+    .markdown-body {
+      grid-column: 1 / 2;
+      grid-row: 2;
+    }
+
+    /* Row 2: TOC (right column) */
+    .toc-sidebar {
+      grid-column: 2 / 3;
+      grid-row: 2;
+      height: 100%; 
+    }
+  }
+
+  .title-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 0.7rem;
+  }
+
+  .post-icon {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .post-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  .post-meta {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .meta-dot { opacity: 0.5; }
+
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    background-color: var(--hover-bg);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-family: monospace;
+    color: var(--accent-color);
+    font-weight: 500;
+  }
+
+  /* --- MARKDOWN BODY --- */
+  .markdown-body {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    width: 100%;
+    max-width: 100%; 
+  }
+
+  .markdown-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 2rem 0;
+    border: 1px solid var(--border-color);
+  }
+
+  .markdown-body :global(h2) {
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 80px;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .markdown-body :global(h3) {
+    color: var(--text-primary);
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    scroll-margin-top: 80px;
+  }
+
+  .markdown-body :global(p) { margin-bottom: 1rem; }
+  
+  .markdown-body :global(a) {
+    color: var(--accent-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .markdown-body :global(a:hover) { border-bottom-color: var(--accent-color); }
+
+  .markdown-body :global(pre) {
+    background-color: var(--card-bg) !important;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+  }
+  
+  .markdown-body :global(:not(pre) > code) {
+    background-color: var(--hover-bg);
+    color: var(--accent-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Menlo', monospace;
+  }
+
+  .bottom-spacer { height: 200px; }
+
+
+  /* --- TOC ALANI --- */
+  .toc-sidebar {
+    height: 100%;
+    /* Hidden on mobile */
+    display: none;
+  }
+
+  @media (min-width: 1100px) {
+    .toc-sidebar { display: block; }
+  }
+
+  .toc-sticky-container { 
+    position: sticky; 
+    top: 2rem; 
+    max-height: calc(100vh - 4rem); 
+    overflow-y: auto; 
+  }
+
+  .toc-title { 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    margin-bottom: 0.3rem; 
+    margin-top: 0; 
+  }
+  
+  .toc-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+  }
+  
+  .toc-sublist { 
+    list-style: none; 
+    padding-left: 0.2rem; 
+    margin: 0.1rem 0; 
+    border-left: 1.5px solid var(--border-color); 
+    margin-left: 1.5rem; 
+  }
+
+  .toc-link {
+    display: block;
+    padding: 0.3rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 1px; 
+    transition: all 0.2s ease;
+    position: relative;
+    line-height: 1.3;
+  }
+
+  .sub-link {
+    font-size: 0.9rem;
+    padding: 0.3rem 1rem;
+    left: -5px; 
+  }
+
+  .toc-link:hover { 
+    color: var(--text-primary); 
+    background: var(--hover-bg); 
+  }
+
+  .toc-link.active {
+    color: var(--accent-color);
+    background: var(--hover-bg); 
+    font-weight: 600;
+  }
+
+  .toc-link.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px; 
+    background-color: var(--accent-color);
+    z-index: 2;
+  }
+
+  .toc-sticky-container::-webkit-scrollbar {
+    width: 4px;
+  }
+  .toc-sticky-container::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+  }
+</style>
