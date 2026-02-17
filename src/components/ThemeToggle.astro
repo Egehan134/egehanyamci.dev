@@ -31,6 +31,19 @@
   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-icon lucide-cloud">
   <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
 </svg>
+
+<!-- Box Icon (Gruvbox Theme) -->
+<svg class="icon gruvbox-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+  <line x1="12" y1="22.08" x2="12" y2="12"/>
+</svg>
+
+<!-- Leaf Icon (Forest Theme) -->
+<svg class="icon forest-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.5 2 6 0 5.5-4.5 10-10 10Z"/>
+  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+</svg>
 </button>
 
 <style>
@@ -51,18 +64,20 @@
   }
 
   .icon {
-    display: none; /* Hide all by default */
+    display: none;
   }
 
   /* Logic to show correct icon based on global theme attribute */
   :global([data-theme="light"]) .sun-icon { display: block; }
   :global([data-theme="dark"]) .moon-icon { display: block; }
   :global([data-theme="tokyo"]) .tokyo-icon { display: block; }
+  :global([data-theme="gruvbox"]) .gruvbox-icon { display: block; }
+  :global([data-theme="forest"]) .forest-icon { display: block; }
 </style>
 
 <script>
   // Client-side logic for switching themes
-  const themes = ['light', 'dark', 'tokyo'];
+  const themes = ['light', 'dark', 'tokyo', 'gruvbox', 'forest'];
   const btn = document.getElementById('theme-toggle');
 
   if (btn) {

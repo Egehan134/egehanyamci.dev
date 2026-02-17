@@ -3,6 +3,7 @@
   src/layouts/BlogPostLayout.astro
 */
 import MainLayout from './MainLayout.astro';
+import Comments from '../components/Comments.astro'; 
 
 interface TocItem {
   id: string;
@@ -31,12 +32,12 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
   
   <div class="post-layout-grid">
     
-    <!-- Part 1 — Header (top row of the grid) -->
+    <!-- PART 1: HEADER -->
     <header class="post-header">
       <div class="post-meta">
         <time>{formattedDate}</time>
         <span class="meta-dot">|</span>
-        <span class="meta-item">Comments</span>
+        <a href="#comments" class="meta-link">Comments</a>
       </div>
       
       <div class="title-container">
@@ -51,13 +52,24 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
       </div>
     </header>
   
-    <!-- Part 2 — Content (below grid, left column) -->
-    <div class="markdown-body">
-      <slot />
+    <!-- PART 2: CONTENT & COMMENTS (Left column) -->
+    <div class="content-column">
+      
+      <!-- Markdown Content -->
+      <div class="markdown-body">
+        <slot />
+      </div>
+
+      <!-- Comments Section -->
+      <div id="comments" class="comments-wrapper">
+        <h2 class="comments-title">Comments</h2>
+        <Comments />
+      </div>
+
       <div class="bottom-spacer"></div>
     </div>
 
-    <!-- Part 3 — TOC (below grid, right column — aligned with content) -->
+    <!-- PART 3: TOC (Right column) -->
     {frontmatter.toc && (
       <aside class="toc-sidebar">
         <div class="toc-sticky-container">
@@ -88,7 +100,7 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. Smooth scrolling
+    // 1. Smooth scrolling (for TOC links)
     document.querySelectorAll('.toc-link').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -110,7 +122,30 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
       });
     });
 
-    // 2. TOC Active State
+    // 2. Smooth scroll for the 'Comments' link in the header
+    const commentsLink = document.querySelector('.meta-link');
+    if (commentsLink) {
+      commentsLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById('comments');
+        if (target) {
+          const offset = 40; 
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = target.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+          // Add hash to URL
+          history.pushState(null, '', '#comments');
+        }
+      });
+    }
+
+    // 3. TOC Active State
     const observerOptions = {
       root: null,
       rootMargin: '0px 0px -90% 0px',
@@ -143,42 +178,39 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
   .post-layout-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 2rem; /* Vertical gap on mobile */
+    gap: 2rem; 
     position: relative;
     width: 100%;
   }
 
-  /* --- HEADER STYLES --- */
   .post-header {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 2rem; /* Bottom spacing on mobile */
+    margin-bottom: 2rem; 
   }
 
-  /* --- DESKTOP GRID YAPISI --- */
+  /* --- DESKTOP GRID LAYOUT --- */
   @media (min-width: 1100px) {
     .post-layout-grid {
-      grid-template-columns: minmax(0, 1fr) 240px;
+      grid-template-columns: minmax(0, 1fr) 240px; 
       gap: 2rem; 
     }
 
-    /* Row 1: Header */
     .post-header {
       grid-column: 1 / 2;
       grid-row: 1;
-      margin-bottom: 0;
+      margin-bottom: 0; 
     }
 
-    /* Row 2: Content (left column) */
-    .markdown-body {
+    /* Content and comments in the same column */
+    .content-column {
       grid-column: 1 / 2;
       grid-row: 2;
     }
 
-    /* Row 2: TOC (right column) */
     .toc-sidebar {
       grid-column: 2 / 3;
-      grid-row: 2;
+      grid-row: 2; 
       height: 100%; 
     }
   }
@@ -213,9 +245,23 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
     align-items: center;
     gap: 0.5rem;
   }
-  
-  .meta-dot { opacity: 0.5; }
 
+  .meta-dot {
+    opacity: 0.5;
+  }
+
+  .meta-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .meta-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+  }
+  
   .post-tags {
     display: flex;
     gap: 0.5rem;
@@ -231,6 +277,26 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
     font-family: monospace;
     color: var(--accent-color);
     font-weight: 500;
+  }
+
+  /* --- CONTENT COLUMN --- */
+  .content-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .comments-wrapper {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .comments-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
   }
 
   /* --- MARKDOWN BODY --- */
@@ -281,12 +347,12 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
   .markdown-body :global(a:hover) { border-bottom-color: var(--accent-color); }
 
   .markdown-body :global(pre) {
-    background-color: var(--card-bg) !important;
+    background-color: var(--code-bg) !important;
     padding: 1rem;
     border-radius: 6px;
     overflow-x: auto;
     margin: 1rem 0;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--code-border);
   }
   
   .markdown-body :global(:not(pre) > code) {
@@ -298,13 +364,11 @@ const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
     font-family: 'Menlo', monospace;
   }
 
-  .bottom-spacer { height: 200px; }
+  .bottom-spacer { height: 10px; } 
 
-
-  /* --- TOC ALANI --- */
+  /* --- TOC AREA --- */
   .toc-sidebar {
     height: 100%;
-    /* Hidden on mobile */
     display: none;
   }
 

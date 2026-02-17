@@ -4,7 +4,7 @@
   /* Default Theme is now DARK */
   --bg-color: #171717;
   --text-primary: #e0e0e0;
-  --text-secondary: #a0a0a0;
+  --text-secondary: #b3b3b3;
   --accent-color: #a7a2ff;
   --sidebar-bg: #171717;
   --border-color: #333333;
@@ -16,33 +16,39 @@
   --btn-bg: #2a2a2a;
   --btn-hover: #363636;
   
+  --code-bg: #1f1f1f;
+  --code-border: #333333;
+
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 [data-theme="light"] {
   /* Light Theme Colors */
-  --bg-color: #ffffff;
-  --text-primary: #2e2e2e;
-  --text-secondary: #595959;
-  --accent-color: #635bff; 
-  --sidebar-bg: #ffffff;
-  --border-color: #e0e0e0;
-  --hover-bg: #f3f4f6;
+  --bg-color: #fdf9f2;
+  --text-primary: #292929;
+  --text-secondary: #2e2e2e;
+  --accent-color: #fe3b3b; 
+  --sidebar-bg: #fdf9f2;
+  --border-color: #cfcdc6;
+  --hover-bg: #edebe6;
   
   /* Light Theme Card Colors */
-  --card-bg: #ffffff;      
-  --card-border: #e0e0e0;  
-  --btn-bg: #f2f2f2;       
-  --btn-hover: #e6e6e6;    
+  --card-bg: #fffdf8;      
+  --card-border: #cfcdc6;  
+  --btn-bg: #f4f1ea;       
+  --btn-hover: #cfcdc6;    
+
+  --code-bg: #282c34;
+  --code-border: #282c34;
 }
 
 [data-theme="tokyo"] {
   --bg-color: #1a1b26;
-  --text-primary: #c0caf5;
-  --text-secondary: #9aa5ce;
+  --text-primary: #d5d6db;
+  --text-secondary: #b1b6c8;
   --accent-color: #7aa2f7;
   --sidebar-bg: #1a1b26;
-  --border-color: #292e42;
+  --border-color: #31364a;
   --hover-bg: #292e42;
 
   /* Tokyo Theme Card Colors */
@@ -50,6 +56,47 @@
   --card-border: #292e42;
   --btn-bg: #292e42;
   --btn-hover: #3b4261;
+
+  --code-bg: #202336;
+  --code-border: #16161e;
+}
+
+[data-theme="gruvbox"] {
+  /* --- GRUVBOX THEME --- */
+  --bg-color: #282828;
+  --text-primary: #ebdbb2;
+  --text-secondary: #a89984;
+  --accent-color: #fabd2f;
+  --sidebar-bg: #282828;
+  --border-color: #3c3836;
+  --hover-bg: #3c3836;
+
+  --card-bg: #32302f;          
+  --card-border: #504945;
+  --btn-bg: #3c3836;
+  --btn-hover: #504945;
+
+  --code-bg: #1d2021;
+  --code-border: #3c3836;
+}
+
+[data-theme="forest"] {
+  /* --- FOREST THEME --- */
+  --bg-color: #0f1614;
+  --text-primary: #e8f5e9;
+  --text-secondary: #8b9d96;
+  --accent-color: #4ade80;
+  --sidebar-bg: #0f1614;
+  --border-color: #1f2b26;
+  --hover-bg: #1f2b26;
+
+  --card-bg: #16201d;          
+  --card-border: #2a3833;
+  --btn-bg: #1f2b26;
+  --btn-hover: #2a3833;
+
+  --code-bg: #0a0f0e;
+  --code-border: #1f2b26;
 }
 
 /* GLOBAL RESET */
