@@ -42,7 +42,7 @@ toc:
 
 Data science learning paths often start and end in Jupyter Notebooks. While notebooks are fantastic for exploration, they rarely represent how machine learning works in the real world. <br>
 This project is a medium-scale (i think this is medium-scale) milestone in my development roadmap. My goal was not just to train a model, but to build a **sustainable data science system** that:<br>
-•	Stores data efficiently in a SQL database.<br>
+•	Stores data efficiently in an SQL database.<br>
 •	Adheres to Object-Oriented Programming (OOP) principles.<br>
 •	Optimizes its own ingestion process (Smart ETL).<br>
 •	Serves predictions to the outside world via a REST API.<br>
