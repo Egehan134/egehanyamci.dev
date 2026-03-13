@@ -52,7 +52,7 @@ In this article, I will walk you through how I built an E-Commerce Analytics sys
 **Why not just use a Notebook?** Because for a sustainable system, code must be modular, readable, and extensible. I organized the project under a src/ directory, dividing it into classes with clear responsibilities.
 
 ### The Project Structure:
-
+```text
 Ecommerce_Project/<br>
 ├── artifacts/          # Stores trained models (.pkl)<br>
 ├── data/               # Raw CSVs and processed data<br>
@@ -67,7 +67,7 @@ Ecommerce_Project/<br>
 │   └── model_trainer.py    # Training pipelines<br>
 ├── main.py             # Orchestration script<br>
 └── requirements.txt
-
+```
 ### Data Persistence (SQLite)
 
 Instead of re-reading a 1,000,000-row CSV file during every execution, I processed the data once and saved it to a SQLite database using SQLAlchemy. This allowed me to proceed much faster in subsequent steps using SQL queries.

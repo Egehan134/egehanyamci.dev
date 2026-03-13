@@ -119,3 +119,4 @@ In conclusion, while AI agents offer unprecedented efficiency, they demand a hig
 6-  Princeton University. (2023). SWE-bench: Can Language Models Resolve Real-World GitHub Issues?<br>
 7-  The Github Blog. (2022). Research: quantifying GitHub Copilot’s impact on developer productivity and happiness.<br>
 8-  Stack Overflow. (2023). Developer Survey.<br>
+*Thanks for reading! If you have questions about anything please contact me!*
