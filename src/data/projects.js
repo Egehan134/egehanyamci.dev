@@ -3,6 +3,18 @@
 */
 export const projects = [
   {
+  year: '2026',
+  title: 'egehanyamci.dev',
+  description: 'A performance-driven platform hosting technical documentation, project case studies, and insights in software engineering and techlonogy.',
+  detailedDescription: 'This project implements a static site generation architecture focused on high-performance delivery and technical clarity. Developed with a minimalist philosophy, it serves as a technical repository for my research and implementations in software architecture, data analytics, and financial systems. The platform prioritizes architectural decisions and implementation details, moving away from generic templates to provide a streamlined, engineering-focused content experience.',
+  tags: ['Astro', 'Cloudflare Pages', 'Tailwind CSS', 'Markdown', 'MDX', 'JavaScript'],
+  links: [
+    { text: 'Article', href: '/posts/maximum-efficiency-my-own-blog/' },
+    { text: 'Source', href: 'https://github.com/Egehan134/egehanyamci.dev' },
+    { text: 'Live', href: 'https://egehanyamci.dev' }
+  ]
+  },
+  {
     year: '2026',
     title: 'E-Commerce Analytics API',
     description: 'An end-to-end data science system handling customer segmentation.',
